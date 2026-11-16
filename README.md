@@ -95,6 +95,10 @@ Testler sonuç satırlarının çözülmesini, Türkçe çevirileri, düzenekler
 
 Karta yükleme Espressif'in [esptool-js](https://github.com/espressif/esptool-js) kütüphanesiyle yapılır (Apache-2.0, `lib/` klasöründe).
 
+## Katkıda bulunma
+
+Hata bildirimi için **Issues → Hata bildirimi** şablonunu, kullanım soruları için **Discussions → Q&A** bölümünü kullanın. Kod göndermeden önce [CONTRIBUTING.md](CONTRIBUTING.md) dosyasına bakın.
+
 ## Lisans
 
 [MIT](LICENSE) © 2026 Halit Büyükbektaş. `lib/` klasöründeki esptool-js kendi [Apache-2.0](lib/esptool-js-LICENSE.txt) lisansıyla dağıtılır.
