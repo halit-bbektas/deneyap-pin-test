@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deneyap Pin Test</title>
+  <meta name="description" content="Deneyap kartlarının pinlerini ve üzerindeki parçaları tarayıcıdan, adım adım test eden uygulama.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23d6202e'/%3E%3Cpath d='M10 9v14M16 9v14M22 9v14' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="ust">
+    <div class="kap ust-ic">
+      <a class="marka" href="#test" aria-label="Deneyap Pin Test">
+        <span class="logo" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>
+          <span class="urun">Deneyap Pin Test</span>
+          <span class="urun-alt">Kart test istasyonu</span>
+        </span>
+      </a>
+      <nav class="ust-nav" aria-label="Sayfa bölümleri">
+        <a href="#test">Test</a>
+        <a href="#liste">Kartlar</a>
+        <a href="#duzenek-bolum">Düzenek</a>
+        <a href="#yardim">Yardım</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="kap">
+    <div id="destek-uyari" class="not uyari" hidden>
+      Bu tarayıcı USB bağlantısını desteklemiyor. Bilgisayarda <b>Google Chrome</b> ya da <b>Microsoft Edge</b> ile açın.
+    </div>
+
+    <!-- Giriş -->
+    <section class="giris">
+      <div class="giris-metin">
+        <span class="ust-rozet">7 Deneyap modeli · kurulum gerektirmez</span>
+        <h1>Deneyap kartını <span class="vurgu-yazi">adım adım</span> test et</h1>
+        <p>Kartı düzeneğe tak, USB'yi bağla. Uygulama modeli tanır, pinleri tek tek dener, kartın üstündeki parçaları kontrol eder
+          ve bir sorun varsa nedenini ve ne yapman gerektiğini söyler.</p>
+      </div>
+      <ol class="nasil">
+        <li>
+          <span class="nasil-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h.01M8 11h.01M8 15h.01M16 7h.01M16 11h.01M16 15h.01"/></svg></span>
+          <span><b>Düzeneği kur</b><small>Breadboard ve jumper'lar</small></span>
+        </li>
+        <li>
+          <span class="nasil-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3v4M15 3v4M7 7h10v4a5 5 0 0 1-10 0z"/><path d="M12 16v5"/></svg></span>
+          <span><b>Pinleri test et</b><small>Tek tuşla, otomatik</small></span>
+        </li>
+        <li>
+          <span class="nasil-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></span>
+          <span><b>Parçaları dene</b><small>LED, düğme, sensörler</small></span>
+        </li>
+        <li>
+          <span class="nasil-ikon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span><b>Raporu al</b><small>Liste ve Excel</small></span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Sihirbaz -->
+    <section id="test" class="panel sihirbaz">
+      <ol id="asamalar" class="asamalar">
+        <li data-asama="hazirlik"><span class="asama-no">1</span><span class="asama-yazi"><b>Hazırlık</b><small>Düzenek ve etiket</small></span></li>
+        <li data-asama="pin"><span class="asama-no">2</span><span class="asama-yazi"><b>Pin testi</b><small>Bağlan, yükle, dene</small></span></li>
+        <li data-asama="parca"><span class="asama-no">3</span><span class="asama-yazi"><b>Parça testleri</b><small>LED, düğme, sensörler</small></span></li>
+        <li data-asama="rapor"><span class="asama-no">4</span><span class="asama-yazi"><b>Rapor</b><small>Sonuç ve liste</small></span></li>
+      </ol>
+
+      <div class="sihirbaz-govde">
+        <div class="hazirlik">
+          <div class="alanlar">
+            <div class="alan">
+              <span class="alan-ad">Kurulu düzenek</span>
+              <div id="duzenek-secim" class="segment" role="group" aria-label="Kurulu düzenek">
+                <button type="button" data-duzenek="kart">Kart</button>
+                <button type="button" data-duzenek="mini">Mini</button>
+                <button type="button" data-duzenek="g">G</button>
+              </div>
+            </div>
+            <label class="alan">
+              <span class="alan-ad">Kart etiketi <em>isteğe bağlı</em></span>
+              <input id="etiket" type="text" placeholder="Örn. A9" maxlength="20" autocomplete="off">
+            </label>
+          </div>
+          <ul class="kontrol-listesi">
+            <li>Kart breadboard'da doğru yerde: sol üst pin (EN) <b>b1</b>'de. <a href="#duzenek-bolum">Şemayı gör</a></li>
+            <li>Kartta SD kart ya da kamera takılı değil.</li>
+            <li>USB'yi taktıktan sonra beklemeden teste başla.</li>
+          </ul>
+        </div>
+
+        <div class="eylem">
+          <button id="btn-test" class="ana-buton buyuk" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            Kartı Bağla ve Test Et
+          </button>
+          <button id="btn-tekrar" class="ikincil-buton" type="button" hidden>Aynı kartı tekrar test et</button>
+        </div>
+
+        <ol id="adimlar" class="adimlar">
+          <li data-adim="baglan">Bağlan</li>
+          <li data-adim="kontrol">Kontrol</li>
+          <li data-adim="yukle">Yükle</li>
+          <li data-adim="test">Test</li>
+          <li data-adim="sonuc">Sonuç</li>
+        </ol>
+        <div id="ilerleme" class="ilerleme" hidden><div id="ilerleme-cubuk"></div></div>
+        <p id="mesaj" class="mesaj" role="status"></p>
+
+        <div id="port-istek" class="not bilgi port-istek" hidden>
+          <p id="port-istek-metin"></p>
+          <div class="butonlar">
+            <button id="port-istek-btn" class="ana-buton kucuk" type="button">Kartı seç</button>
+            <button id="port-istek-iptal" class="metin-buton" type="button">İptal</button>
+          </div>
+        </div>
+
+        <details class="ince">
+          <summary>Gelişmiş</summary>
+          <label class="secenek"><input id="zorla-yukle" type="checkbox"> Test yazılımını her seferinde yeniden yükle</label>
+        </details>
+      </div>
+    </section>
+
+    <!-- Rapor -->
+    <section id="sonuc" class="panel rapor" hidden>
+      <div class="rapor-ust">
+        <div id="karar" class="karar">
+          <div id="karar-baslik" class="karar-baslik"></div>
+          <div id="karar-alt" class="karar-alt"></div>
+          <div id="karar-parca" class="karar-parca" hidden></div>
+        </div>
+        <dl class="bilgi">
+          <div><dt>Model</dt><dd id="s-model">–</dd></div>
+          <div><dt>Kart kimliği</dt><dd id="s-kimlik" class="kod">–</dd></div>
+          <div><dt>Etiket</dt><dd id="s-etiket">–</dd></div>
+          <div><dt>Test yazılımı</dt><dd id="s-surum">–</dd></div>
+        </dl>
+      </div>
+
+      <div class="rapor-bolum">
+        <h2 class="bolum-baslik"><span class="bolum-no">2</span>Pin testi</h2>
+        <div id="sorun-listesi"></div>
+        <div id="sonuc-kart-kap" class="sonuc-kart">
+          <div id="sonuc-kart" class="sema"></div>
+          <ul class="lejant">
+            <li><span class="nokta ok"></span>Sağlam</li>
+            <li><span class="nokta bozuk"></span>Bozuk</li>
+            <li><span class="nokta kontrol"></span>Kontrol et</li>
+            <li><span class="nokta atla"></span>Test dışı</li>
+            <li><span class="nokta bos"></span>Güç / bağlantısız</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="parca-kap" class="rapor-bolum parca" hidden>
+        <div class="baslik-satir">
+          <h2 class="bolum-baslik"><span class="bolum-no">3</span>Parça testleri</h2>
+          <button id="btn-parca" class="ana-buton kucuk" type="button">Parça testlerini başlat</button>
+        </div>
+        <p id="parca-aciklama" class="aciklama"></p>
+        <div id="parca-soru" class="not bilgi parca-soru" hidden>
+          <p id="parca-soru-metin"></p>
+          <div id="parca-soru-butonlar" class="butonlar"></div>
+        </div>
+        <ul id="parca-liste" class="parca-liste"></ul>
+      </div>
+    </section>
+
+    <!-- Liste -->
+    <section id="liste" class="panel">
+      <div class="baslik-satir">
+        <h2 class="bolum-h2">Test edilen kartlar</h2>
+        <div class="butonlar">
+          <button id="btn-csv" class="ikincil-buton kucuk" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+            Excel'e indir
+          </button>
+          <button id="btn-temizle" class="metin-buton" type="button">Temizle</button>
+        </div>
+      </div>
+      <div class="sayaclar">
+        <div class="sayac"><b id="say-toplam">0</b><span>Toplam</span></div>
+        <div class="sayac ok"><b id="say-saglam">0</b><span>Sağlam</span></div>
+        <div class="sayac bozuk"><b id="say-bozuk">0</b><span>Bozuk</span></div>
+      </div>
+      <p id="liste-bos" class="bos-durum">Henüz test edilen kart yok. İlk kartı yukarıdan test ettiğinde burada görünecek.</p>
+      <div id="liste-tablo" class="tablo-kap" hidden>
+        <table>
+          <thead><tr><th>#</th><th>Saat</th><th>Etiket</th><th>Model</th><th>Kimlik</th><th>Sonuç</th><th>Sorunlu pinler</th><th>Parçalar</th></tr></thead>
+          <tbody id="liste-govde"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Düzenek -->
+    <section id="duzenek-bolum" class="panel">
+      <div class="baslik-satir">
+        <h2 class="bolum-h2">Düzenek kurulumu <span class="baslik-ek" id="duzenek-modeller"></span></h2>
+      </div>
+      <ol class="kurulum">
+        <li>Breadboard'u dikey koy. USB kablosu çıkarılmış olsun.</li>
+        <li>Kartı USB girişi sana bakacak şekilde, ortadaki oluğun iki yanına tak. <span id="duzenek-yerlesim"></span>
+          Pinler sonuna kadar girsin.</li>
+        <li>Aşağıdaki listedeki <b id="jumper-sayisi"></b> jumper'ı tak: her pinin yanındaki boş delikten (a ya da j) toplama satırına.</li>
+        <li>Aynı gruptaki kablolar toplama satırının <b>aynı yarısına</b> girmeli. Aradaki satırlar (<span id="bos-satirlar"></span>) boş kalsın.</li>
+        <li>Güç pinlerine (3V3, 5V, GND, BAT) ve EN'e hiçbir şey takma.</li>
+        <li>Kartta SD kart ya da kamera takılıysa çıkar: 1A'da SD yuvası D9, D13, D14 ve D15'e bağlıdır, kamera da birçok pini kullanır.</li>
+        <li>Kartı breadboard'a USB kablosu çıkarken tak. Kablo takılınca beklemeden testi başlat: kartta eski bir program varsa, test yazılımı yüklenene kadar pinleri sürebilir.</li>
+      </ol>
+      <div id="etiket-secim" class="cipler" aria-label="Şemadaki pin adları"></div>
+      <div class="duzenek-ic">
+        <div id="duzenek-sema" class="sema"></div>
+        <div id="kablo-listesi" class="kablo-listesi"></div>
+      </div>
+    </section>
+
+    <!-- Yardım -->
+    <section id="yardim" class="yardim">
+      <h2 class="bolum-h2">Yardım</h2>
+
+      <details class="acilir">
+        <summary>Desteklenen kartlar ve test edilen parçalar</summary>
+        <div class="acilir-ic">
+          <p class="aciklama">Piyasadaki 7 Deneyap geliştirme kartının hepsi tanınır. Aynı düzenek etiketini taşıyan kartlar aynı kablolamayı kullanır.</p>
+          <div id="model-izgara" class="model-izgara"></div>
+        </div>
+      </details>
+
+      <details class="acilir" id="gorunmuyor">
+        <summary>Kart bilgisayarda hiç görünmüyor</summary>
+        <div class="acilir-ic">
+          <p class="aciklama">Sırayla ilerleyin; bir adımda kart görünürse orada durun. Ölçüm adımları için bir multimetre gerekir.</p>
+          <ol class="rehber">
+            <li><b>Işık yanıyor mu?</b> USB takılıyken kartta hiçbir ışık yanmıyorsa karta güç gelmiyor olabilir; 2. ve 3. adımlarla başlayın.</li>
+            <li><b>Kablo:</b> Telefon şarj kablolarının çoğu sadece güç taşır, veri taşımaz. Sağlam bir kartta çalıştığını bildiğiniz kabloyla deneyin.</li>
+            <li><b>USB girişi:</b> Bilgisayarın başka bir USB girişini deneyin; USB çoğaltıcı (hub) kullanmayın.</li>
+            <li><b>Sürücü (Deneyap Kart, 1A):</b> Aygıt Yöneticisi'nde "Bağlantı noktaları"nda ya da "Diğer aygıtlar"da sarı ünlemli bir CP2102 görünüyorsa
+              <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" rel="noopener">CP210x sürücüsünü</a> kurun.
+              v2, 1A v2, Mini ve G sürücü istemez.</li>
+            <li><b>Yükleme modu (v2, 1A v2, Mini, Mini v2, G):</b> BUT'u basılı tutun, RESET'e basıp bırakın, sonra BUT'u bırakın. Kart şimdi görünüyorsa
+              içindeki program USB'yi kapatıyordur; donanım sağlamdır. "Gelişmiş" kutusunu işaretleyip testi başlatın, test yazılımı yüklenir.</li>
+            <li><b>Gerilim ölçümü:</b> Kart USB'ye takılıyken multimetrenin siyah ucunu GND pinine değdirin.
+              <ul>
+                <li>Kırmızı uç <b>5V</b> pininde: yaklaşık 5 V olmalı. 0 V ise USB soketi, kablo ya da kartın girişindeki koruma parçası arızalıdır.</li>
+                <li>Kırmızı uç <b>3V3</b> pininde: yaklaşık 3,3 V olmalı. 5 V var ama 3V3 yoksa ya da çok düşükse <b>3,3 V regülatörü</b> arızalıdır
+                  ya da 3V3 hattında kısa devre vardır. Regülatör elle tutulamayacak kadar ısınıyorsa kısa devre vardır; kartı hemen çıkarın.</li>
+                <li>3V3 pininde 4 V'un üstünde gerilim varsa kartı hemen çıkarın: regülatör içten kısa devre olmuş, işlemci zarar görebilir.</li>
+                <li>İki gerilim de doğru ama kart yine görünmüyorsa arıza USB çipindedir (Deneyap Kart ve 1A'da CP2102) ya da işlemcinin USB hattındadır.</li>
+              </ul>
+            </li>
+            <li><b>Regülatör arızalıysa deneme yöntemi (ileri seviye):</b> Kartı USB'den çıkarıp multimetreyi direnç/süreklilik konumunda 3V3 ile GND arasına bağlayın.
+              Birkaç ohm ya da bip sesi varsa hatta kısa devre vardır, bu yöntemi <b>denemeyin</b>. Kısa devre yoksa sağlam bir Deneyap kartı USB'ye takın,
+              onun <b>3V3</b> pinini arızalı kartın <b>3V3</b> pinine, <b>GND</b>'sini <b>GND</b>'sine jumper ile bağlayın, sonra arızalı kartı da kendi kablosuyla bilgisayara takın.
+              Kart görünürse arıza regülatördedir ve kartın geri kalanı bu şekilde test edilebilir. 5V pinlerini birbirine bağlamayın; sağlam kartın regülatörü
+              ısınırsa bağlantıyı hemen sökün. Kalıcı çözüm regülatörün değiştirilmesidir (lehim gerektirir).</li>
+            <li><b>USB çipi arızalıysa (ileri seviye):</b> Ayrı bir USB-TTL dönüştürücü (CP2102 ya da CH340 modülü, 3,3 V) ile kartın TX, RX ve GND pinlerine bağlanılarak
+              işlemci programlanabilir. Bu yol, kartın kendi USB devresini atlar.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="acilir">
+        <summary>Sorun giderme</summary>
+        <div class="acilir-ic">
+          <ul class="sss">
+            <li><b>Port listesi boş:</b> Deneyap Kart ve 1A için <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" rel="noopener">CP210x sürücüsünü</a> kurun. Kablo sadece şarj kablosu olabilir; başka kablo deneyin.</li>
+            <li><b>"Port açılamadı":</b> Deneyap Kart IDE'nin Seri Monitörü, uygulamanın başka bir sekmesi ya da başka bir program portu kullanıyor olabilir. Kapatıp tekrar deneyin.</li>
+            <li><b>Yükleme başlamıyor:</b> Karttaki BUT düğmesini basılı tutun, RESET'e basıp bırakın, BUT'u bırakın ve tekrar deneyin.</li>
+            <li><b>Mini'de iki kez port seçimi:</b> Mini yükleme moduna geçince ve test yazılımı yüklenince bilgisayara yeni bir cihaz gibi görünür. Uygulama bu adımlarda sizden kartı yeniden seçmenizi ister.</li>
+            <li><b>"Düzenek uyumsuz":</b> Kart başka bir düzenek ister. Breadboard'u o kartın şemasına göre kurun ve üstteki "Kurulu düzenek" seçimini değiştirin.</li>
+            <li><b>Birçok pin birden "bozuk", kart test sırasında yeniden başlıyor ya da sonuç gelmiyor:</b> Kart breadboard'a bir sıra kaymış takılmış olabilir; jumper'lar o zaman GND, 3V3 ya da EN'e denk gelir. USB'yi çıkarın, kartın yerini şemayla karşılaştırın.</li>
+            <li><b>Birkaç pin "bozuk":</b> Önce o pinlerin jumper'larını kontrol edin. Sağlam olduğunu bildiğiniz bir kart da aynı pinlerde hata veriyorsa sorun düzenektedir.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acilir">
+        <summary>Teknik kayıt</summary>
+        <div class="acilir-ic"><pre id="log" class="log"></pre></div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="kap alt">
+    <span>Deneyap Pin Test · test yazılımı <span id="fw-surum">–</span></span>
+    <span>Karta yükleme <a href="https://github.com/espressif/esptool-js" target="_blank" rel="noopener">esptool-js</a> (Apache-2.0) ile yapılır.</span>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

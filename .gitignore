@@ -1,0 +1,3 @@
+firmware-src/**/build/
+build/
+build-s3/

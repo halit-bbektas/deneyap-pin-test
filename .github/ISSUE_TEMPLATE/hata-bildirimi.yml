@@ -1,0 +1,49 @@
+name: Hata bildirimi
+description: Test sonucu yanlış görünüyorsa ya da uygulama çalışmıyorsa
+labels: [hata]
+body:
+  - type: dropdown
+    id: model
+    attributes:
+      label: Kart modeli
+      options:
+        - Deneyap Kart
+        - Deneyap Kart 1A
+        - Deneyap Kart v2
+        - Deneyap Kart 1A v2
+        - Deneyap Mini
+        - Deneyap Mini v2
+        - Deneyap Kart G
+        - Bilmiyorum
+    validations:
+      required: true
+  - type: dropdown
+    id: duzenek
+    attributes:
+      label: Kurulu düzenek
+      options:
+        - Kart
+        - Mini
+        - G
+    validations:
+      required: true
+  - type: input
+    id: tarayici
+    attributes:
+      label: Tarayıcı ve işletim sistemi
+      placeholder: Chrome 131, Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: ne-oldu
+    attributes:
+      label: Ne oldu, ne bekliyordunuz?
+      description: Sağlam olduğunu bildiğiniz bir kartla da denediyseniz sonucunu yazın.
+    validations:
+      required: true
+  - type: textarea
+    id: gunluk
+    attributes:
+      label: Günlük
+      description: Uygulamadaki "Gelişmiş" bölümünden günlüğü kopyalayıp yapıştırın.
+      render: text

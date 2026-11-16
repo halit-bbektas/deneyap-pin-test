@@ -1,0 +1,9 @@
+{
+  "surum": "1.3.0",
+  "aileler": {
+    "ESP32": { "dosya": "dpt_esp32.bin", "adres": 0, "duzenek": "kart", "modeller": ["Deneyap Kart", "Deneyap Kart 1A"] },
+    "ESP32-S3": { "dosya": "dpt_esp32s3.bin", "adres": 0, "duzenek": "kart", "modeller": ["Deneyap Kart v2", "Deneyap Kart 1A v2"] },
+    "ESP32-S2": { "dosya": "dpt_esp32s2.bin", "adres": 0, "duzenek": "mini", "modeller": ["Deneyap Mini", "Deneyap Mini v2"] },
+    "ESP32-C3": { "dosya": "dpt_esp32c3.bin", "adres": 0, "duzenek": "g", "modeller": ["Deneyap Kart G"] }
+  }
+}
